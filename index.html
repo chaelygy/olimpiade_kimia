@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendaftaran & Cetak Kartu Peserta Olimpiade Kimia 2026 - Universitas HKBP Nommensen</title>
+  <meta name="description" content="Portal pendaftaran dan pembuatan kartu peserta otomatis Olimpiade Kimia 2026 Universitas HKBP Nommensen Pematangsiantar. Cetak kartu ujian resmi dalam format PDF berstandar A4.">
+  <meta name="theme-color" content="#860d14">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <!-- Ambient background glow & chemistry lattice -->
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-chem-particles" aria-hidden="true"></div>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Navigation / Brand Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="logo-wrapper">
+          <img src="/assets/logo.png" alt="Logo Olimpiade Kimia UHKBPNP" class="brand-logo" onerror="this.src='/favicon.svg'">
+          <div class="logo-glow"></div>
+        </div>
+        <div class="brand-text">
+          <div class="badge-pill">
+            <span class="pulsing-dot"></span>
+            <span>PORTAL RESMI PENDAFTARAN & KARTU</span>
+          </div>
+          <h1 class="brand-title">Olimpiade Kimia 2026</h1>
+          <p class="brand-subtitle">Universitas HKBP Nommensen Pematangsiantar</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" id="btn-show-guide" class="btn btn-outline" title="Panduan Cetak & Persyaratan">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          <span>Petunjuk & Info</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Highlight Banner -->
+  <section class="hero-strip">
+    <div class="hero-container">
+      <div class="hero-motto">
+        <span class="motto-tag">Tema</span>
+        <span class="motto-text">"Eksplorasi Ilmu Kimia untuk Generasi Inovatif dan Solutif"</span>
+      </div>
+      <div class="hero-schedule">
+        <svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>Pelaksanaan: <strong>14 November 2026</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Workspace: Form & Live Card Preview -->
+  <main class="main-layout">
+    <!-- Left Column: Registration Form -->
+    <section class="panel-section form-panel">
+      <div class="glass-card">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="icon-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <line x1="19" y1="8" x2="19" y2="14"></line>
+                <line x1="22" y1="11" x2="16" y2="11"></line>
+              </svg>
+            </div>
+            <div>
+              <h2 class="panel-title">Formulir Pendaftaran</h2>
+              <p class="panel-desc">Lengkapi biodata peserta untuk menerbitkan kartu ujian resmi.</p>
+            </div>
+          </div>
+          <button type="button" id="btn-quick-sample" class="btn btn-sm btn-subtle" title="Isi dengan data sampel untuk mencoba">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+              <polyline points="13 2 13 9 20 9"></polyline>
+            </svg>
+            <span>Isi Data Sampel</span>
+          </button>
+        </div>
+
+        <form id="registration-form" class="registration-form" novalidate>
+          <!-- Nama Peserta -->
+          <div class="form-group">
+            <label for="input-nama" class="form-label">
+              <span>Nama Lengkap Peserta</span>
+              <span class="required-star">*</span>
+            </label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input 
+                type="text" 
+                id="input-nama" 
+                name="namaPeserta" 
+                class="form-control" 
+                placeholder="Contoh: Jessica Abigail Simanjuntak" 
+                required 
+                autocomplete="name"
+                maxlength="70"
+              >
+            </div>
+            <span class="field-hint">Nama akan dicetak pada kartu ujian sesuai tanda kurung.</span>
+          </div>
+
+          <!-- Asal Sekolah -->
+          <div class="form-group">
+            <label for="input-sekolah" class="form-label">
+              <span>Asal / Alamat Sekolah</span>
+              <span class="required-star">*</span>
+            </label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <input 
+                type="text" 
+                id="input-sekolah" 
+                name="asalSekolah" 
+                class="form-control" 
+                placeholder="Contoh: SMA Negeri 1 Pematangsiantar" 
+                required 
+                maxlength="80"
+              >
+            </div>
+            <span class="field-hint">Tuliskan nama SMA / SMK / MA beserta domisili sekolah.</span>
+          </div>
+
+          <!-- Nomor Peserta -->
+          <div class="form-group">
+            <label for="input-nomor" class="form-label">
+              <span>Nomor Peserta</span>
+              <span class="required-star">*</span>
+            </label>
+            <div class="input-group-row">
+              <div class="input-wrapper flex-grow">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                  <line x1="7" y1="15" x2="7" y2="15.01"></line>
+                  <line x1="17" y1="15" x2="17" y2="15.01"></line>
+                </svg>
+                <input 
+                  type="text" 
+                  id="input-nomor" 
+                  name="nomorPeserta" 
+                  class="form-control mono-font" 
+                  placeholder="OK-001" 
+                  value="OK-001"
+                  required 
+                  maxlength="20"
+                >
+              </div>
+              <button type="button" id="btn-generate-nomor" class="btn btn-secondary" title="Buat nomor urut otomatis">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+                <span>Nomor Baru</span>
+              </button>
+            </div>
+            <span class="field-hint">Format standar: <code>OK-001</code>, <code>OK-002</code>, dst. Anda bisa mengetik nomor sendiri.</span>
+          </div>
+
+          <!-- Foto Peserta -->
+          <div class="form-group">
+            <label class="form-label">
+              <span>Pas Foto Peserta (Ukuran 3 × 4 cm)</span>
+              <span class="required-star">*</span>
+            </label>
+            
+            <div id="photo-dropzone" class="photo-dropzone">
+              <input type="file" id="input-foto-file" accept="image/png, image/jpeg, image/jpg, image/webp" class="visually-hidden">
+              
+              <div class="dropzone-empty" id="dropzone-empty-state">
+                <div class="dropzone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </div>
+                <div class="dropzone-text">
+                  <p class="dropzone-title">Tarik & Lepas Foto di sini, atau <button type="button" class="btn-link" id="btn-browse-file">Pilih Berkas</button></p>
+                  <p class="dropzone-caption">Format: JPG, PNG, WEBP (Disarankan rasio 3:4 latar polos)</p>
+                </div>
+              </div>
+
+              <div class="dropzone-preview hidden" id="dropzone-preview-state">
+                <div class="photo-thumbnail-box">
+                  <img id="preview-thumbnail-img" alt="Pratinjau Foto Peserta">
+                </div>
+                <div class="photo-controls-meta">
+                  <div class="photo-filename" id="photo-filename-label">foto_peserta.jpg</div>
+                  <div class="photo-tools">
+                    <button type="button" class="btn btn-xs btn-outline" id="btn-reselect-photo">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                      <span>Ganti</span>
+                    </button>
+                    <button type="button" class="btn btn-xs btn-danger-outline" id="btn-remove-photo">
+                      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
+                      <span>Hapus</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick sample photo buttons -->
+            <div class="photo-quick-picks">
+              <span class="quick-picks-label">Foto Cepat:</span>
+              <button type="button" class="btn-chip" id="btn-sample-photo-1">
+                <span>Contoh Siswa 1</span>
+              </button>
+              <button type="button" class="btn-chip" id="btn-sample-photo-2">
+                <span>Contoh Siswi 2</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Opsi & Kustomisasi Kartu -->
+          <details class="custom-details">
+            <summary class="details-summary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+              <span>Pengaturan Tanggal & Stempel Resmi</span>
+            </summary>
+            <div class="details-body">
+              <div class="form-group">
+                <label for="input-pelaksanaan" class="form-label">Teks Tanggal Pelaksanaan</label>
+                <input 
+                  type="text" 
+                  id="input-pelaksanaan" 
+                  class="form-control" 
+                  value="14 NOVEMBER 2026"
+                  maxlength="50"
+                >
+              </div>
+              <div class="toggle-group">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-stempel" checked>
+                  <span class="slider"></span>
+                </label>
+                <div class="toggle-text">
+                  <span class="toggle-title">Tampilkan Stempel Panitia Olimpiade Kimia</span>
+                  <span class="toggle-desc">Stempel resmi UHKBPNP warna biru</span>
+                </div>
+              </div>
+              <div class="toggle-group">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="toggle-guides" checked>
+                  <span class="slider"></span>
+                </label>
+                <div class="toggle-text">
+                  <span class="toggle-title">Garis Putus-Putus & Petunjuk Cetak</span>
+                  <span class="toggle-desc">Menampilkan batas gunting dan petunjuk pada kertas A4</span>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Primary Submit & Download Action Buttons -->
+          <div class="form-actions">
+            <button type="button" id="btn-download-pdf" class="btn btn-primary btn-glow">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="12" y2="18"></line>
+                <line x1="15" y1="15" x2="12" y2="18"></line>
+              </svg>
+              <div class="btn-text-block">
+                <span class="btn-title">Cetak Kartu (PDF Resmi)</span>
+                <span class="btn-subtext">Unduh format A4 Landscape siap cetak</span>
+              </div>
+            </button>
+
+            <div class="action-grid-buttons">
+              <button type="button" id="btn-print-direct" class="btn btn-secondary">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                <span>Print Langsung</span>
+              </button>
+
+              <button type="button" id="btn-download-png" class="btn btn-secondary">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <span>Unduh Gambar (PNG)</span>
+              </button>
+
+              <button type="reset" id="btn-reset-form" class="btn btn-ghost" title="Kosongkan formulir">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="1 4 1 10 7 10"></polyline>
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+                <span>Reset Form</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Right Column: Live Card Preview (Real-Time WYSIWYG) -->
+    <section class="panel-section preview-panel">
+      <div class="sticky-preview-wrapper">
+        <div class="preview-controls-bar">
+          <div class="preview-status-tag">
+            <span class="live-dot"></span>
+            <span>Pratinjau Kartu Real-Time</span>
+          </div>
+
+          <div class="preview-zoom-actions">
+            <button type="button" id="btn-fit-screen" class="btn-pill-sm active" title="Sesuaikan lebar layar">Pas Layar</button>
+            <button type="button" id="btn-scale-100" class="btn-pill-sm" title="Ukuran 100% cetak">100% Cetak</button>
+          </div>
+        </div>
+
+        <!-- The Paper Area Container (Mimics A4 Landscape Sheet) -->
+        <div class="paper-viewport" id="paper-viewport">
+          <div class="a4-sheet" id="printable-sheet">
+            
+            <!-- Page Title on Paper -->
+            <div class="sheet-header" id="sheet-header-title">
+              <h2 class="paper-page-title">KARTU PESERTA OLIMPIADE KIMIA 2026</h2>
+            </div>
+
+            <!-- The Official Participant Card Element -->
+            <div class="participant-card" id="target-participant-card">
+              
+              <!-- Card Top Header (Maroon Background) -->
+              <div class="card-header-banner">
+                <div class="card-logo-box">
+                  <img src="/assets/logo.png" alt="Logo Olimpiade Kimia" class="card-emblem-img">
+                </div>
+                <div class="card-header-titles">
+                  <h3 class="card-title-main">KARTU PESERTA</h3>
+                  <div class="card-title-sub">OLIMPIADE KIMIA 2026</div>
+                  <div class="card-institution">UNIVERSITAS HKBP NOMMENSEN PEMATANGSIANTAR</div>
+                  <div class="card-motto">Eksplorasi Ilmu Kimia untuk Generasi Inovatif dan Solutif</div>
+                </div>
+              </div>
+
+              <!-- Card Body Content -->
+              <div class="card-body-content">
+                
+                <!-- Left Photo Box (3x4 cm ratio) -->
+                <div class="card-photo-box" id="card-photo-container">
+                  <div class="photo-placeholder-text" id="photo-placeholder-guide">
+                    <span class="photo-guide-line1">FOTO</span>
+                    <span class="photo-guide-line2">PESERTA</span>
+                    <span class="photo-guide-line3">3 × 4 cm</span>
+                  </div>
+                  <img id="card-photo-img" class="card-photo-rendered hidden" alt="Foto Peserta">
+                </div>
+
+                <!-- Right Data Fields -->
+                <div class="card-info-table">
+                  <div class="card-field-row">
+                    <div class="card-field-label">NAMA PESERTA</div>
+                    <div class="card-field-value" id="card-display-nama">[Nama lengkap]</div>
+                  </div>
+
+                  <div class="card-field-row">
+                    <div class="card-field-label">ASAL SEKOLAH</div>
+                    <div class="card-field-value" id="card-display-sekolah">[Nama sekolah]</div>
+                  </div>
+
+                  <div class="card-field-row">
+                    <div class="card-field-label">NOMOR PESERTA</div>
+                    <div class="card-field-value nomor-badge-text" id="card-display-nomor">OK-001</div>
+                  </div>
+                </div>
+
+                <!-- Stempel Panitia (Official Stamp overlaying bottom-right) -->
+                <div class="card-stamp-wrapper" id="card-stamp-box">
+                  <img src="/assets/stempel.png" alt="Stempel Resmi Olimpiade Kimia" class="card-stamp-img">
+                </div>
+
+              </div>
+
+              <!-- Sub-banner: Tanggal Pelaksanaan -->
+              <div class="card-schedule-banner">
+                <span class="schedule-text">PELAKSANAAN: <strong id="card-display-pelaksanaan">14 NOVEMBER 2026</strong></span>
+              </div>
+
+              <!-- Card Footer Note -->
+              <div class="card-footer-note">
+                PANITIA OLIMPIADE KIMIA 2026 • UHKBPNP
+              </div>
+
+            </div>
+
+            <!-- Page Footer Note on Paper (Print instructions) -->
+            <div class="sheet-footer-guide" id="sheet-footer-instructions">
+              <p class="print-instruction-text">
+                <strong>Petunjuk Cetak:</strong> Ganti teks dalam tanda kurung dan nomor peserta sesuai data masing-masing. Potong mengikuti garis putus-putus kartu.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Direct Action Bar below preview for convenience -->
+        <div class="preview-direct-actions">
+          <div class="spec-info-chip">
+            <svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Ukuran Kartu: ± 12,3 × 9,6 cm | A4 Landscape</span>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline" id="btn-quick-download-top">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Unduh Sekarang</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+
+  <!-- Guidelines Modal -->
+  <dialog id="guide-modal" class="custom-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="icon-badge-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 class="modal-title">Panduan Pencetakan & Ketentuan Kartu</h3>
+            <p class="modal-subtitle">Petunjuk resmi Panitia Olimpiade Kimia UHKBPNP 2026</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-modal" aria-label="Tutup modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="guide-grid">
+          <div class="guide-item">
+            <div class="guide-step-num">1</div>
+            <div class="guide-content">
+              <h4>Kertas Rekomendasi</h4>
+              <p>Gunakan kertas <strong>HVS A4 (80 gsm)</strong> atau untuk hasil lebih kokoh gunakan <strong>Kertas Brief Card (BC) / Art Paper 150-210 gsm</strong>.</p>
+            </div>
+          </div>
+
+          <div class="guide-item">
+            <div class="guide-step-num">2</div>
+            <div class="guide-content">
+              <h4>Pengaturan Print (Cetak)</h4>
+              <p>Pada dialog printer, pastikan memilih ukuran kertas <strong>A4</strong>, orientasi <strong>Landscape</strong>, dan skala <strong>100% (Actual Size / Fit to Page)</strong>.</p>
+            </div>
+          </div>
+
+          <div class="guide-item">
+            <div class="guide-step-num">3</div>
+            <div class="guide-content">
+              <h4>Ketentuan Pas Foto 3x4</h4>
+              <p>Foto peserta mengenakan seragam sekolah rapi atau kemeja berkerah dengan latar belakang polos (merah / biru) berpenampilan sopan.</p>
+            </div>
+          </div>
+
+          <div class="guide-item">
+            <div class="guide-step-num">4</div>
+            <div class="guide-content">
+              <h4>Pemotongan Kartu</h4>
+              <p>Gunting kartu secara presisi mengikuti <strong>garis putus-putus abu-abu</strong> di sekeliling kartu. Kartu wajib dibawa saat hari pelaksanaan ujian.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btn-modal-understand">Saya Mengerti</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Hidden Printable Container for @media print -->
+  <div id="print-container" class="print-only"></div>
+
+  <!-- Loading Overlay for PDF Generation -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="loading-content">
+      <div class="spinner-ring"></div>
+      <p class="loading-title" id="loading-message">Membuat PDF Kartu Peserta...</p>
+      <p class="loading-subtitle">Memproses resolusi tinggi untuk hasil cetak tajam</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="/assets/logo.png" alt="Logo" class="footer-logo">
+        <div>
+          <div class="footer-title">Olimpiade Kimia 2026</div>
+          <div class="footer-copy">Program Studi Pendidikan Kimia • Universitas HKBP Nommensen Pematangsiantar</div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <span class="copyright-tag">&copy; 2026 Panitia Olimpiade Kimia • Siap Hosting di Vercel</span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
