@@ -42,6 +42,8 @@ const elements = {
   cardPhotoImg: document.getElementById('card-photo-img'),
   targetCard: document.getElementById('target-participant-card'),
   printableSheet: document.getElementById('printable-sheet'),
+  scalerBox: document.getElementById('sheet-scaler-box'),
+  paperViewport: document.getElementById('paper-viewport'),
   sheetHeaderTitle: document.getElementById('sheet-header-title'),
   sheetFooterInstructions: document.getElementById('sheet-footer-instructions'),
 
@@ -96,6 +98,51 @@ function showToast(message, type = 'info', duration = 3500) {
 }
 
 // ==========================================================================
+// RESPONSIVE AUTO-FIT CARD SCALER (Mobile & Desktop)
+// ==========================================================================
+function autoFitCardPreview() {
+  const viewport = elements.paperViewport;
+  const scalerBox = elements.scalerBox;
+  const sheet = elements.printableSheet;
+  if (!viewport || !sheet || !scalerBox) return;
+
+  const isManual100 = elements.btnScale100 && elements.btnScale100.classList.contains('active');
+  if (isManual100) {
+    viewport.style.overflowX = 'auto';
+    scalerBox.style.overflow = 'visible';
+    sheet.style.transformOrigin = 'top center';
+    sheet.style.transform = 'scale(1)';
+    scalerBox.style.height = `${sheet.offsetHeight + 20}px`;
+    return;
+  }
+
+  // "Pas Layar" auto-fit mode
+  viewport.style.overflowX = 'hidden';
+  scalerBox.style.overflow = 'hidden';
+
+  const viewportWidth = viewport.clientWidth;
+  const horizontalPadding = window.innerWidth <= 480 ? 12 : 28;
+  const targetAvailableWidth = viewportWidth - (horizontalPadding * 2);
+  const baseWidth = 590; // Natural sheet width
+
+  let scale = 1;
+  if (targetAvailableWidth < baseWidth) {
+    scale = Math.max(0.38, targetAvailableWidth / baseWidth);
+  }
+
+  const scaledWidth = baseWidth * scale;
+  const leftOffset = Math.max(0, Math.floor((viewportWidth - scaledWidth) / 2));
+  const scaledHeight = Math.ceil(sheet.offsetHeight * scale);
+
+  sheet.style.transformOrigin = 'top left';
+  sheet.style.transform = `translate(${leftOffset}px, 0) scale(${scale})`;
+  
+  if (scaledHeight > 0) {
+    scalerBox.style.height = `${scaledHeight + 14}px`;
+  }
+}
+
+// ==========================================================================
 // LIVE PREVIEW UPDATER
 // ==========================================================================
 function updateCardPreview() {
@@ -144,6 +191,9 @@ function updateCardPreview() {
     elements.cardPhotoImg.classList.add('hidden');
     elements.photoPlaceholderGuide.classList.remove('hidden');
   }
+
+  // Recalculate responsive fit
+  autoFitCardPreview();
 }
 
 // ==========================================================================
@@ -345,9 +395,14 @@ async function exportToPdf() {
   elements.loadingMessage.textContent = 'Menyiapkan Dokumen PDF Kartu Peserta...';
   elements.loadingOverlay.classList.remove('hidden');
 
-  try {
-    const sheetElement = elements.printableSheet;
+  // Temporarily reset CSS scale to 1 for 100% crisp full-resolution capture
+  const sheetElement = elements.printableSheet;
+  const prevTransform = sheetElement.style.transform;
+  const prevHeight = elements.scalerBox ? elements.scalerBox.style.height : '';
+  sheetElement.style.transform = 'none';
+  if (elements.scalerBox) elements.scalerBox.style.height = 'auto';
 
+  try {
     // Use html2canvas with scale: 3 for ultra-sharp 300DPI equivalent quality
     const canvas = await html2canvas(sheetElement, {
       scale: 3,
@@ -411,7 +466,10 @@ async function exportToPdf() {
     console.error('Error generating PDF:', error);
     showToast('Gagal membuat PDF. Anda juga dapat menggunakan tombol "Print Langsung"', 'error');
   } finally {
+    sheetElement.style.transform = prevTransform;
+    if (elements.scalerBox) elements.scalerBox.style.height = prevHeight;
     elements.loadingOverlay.classList.add('hidden');
+    autoFitCardPreview();
   }
 }
 
@@ -424,6 +482,12 @@ async function exportToPng() {
 
   elements.loadingMessage.textContent = 'Merender Gambar Kartu HD...';
   elements.loadingOverlay.classList.remove('hidden');
+
+  const sheetElement = elements.printableSheet;
+  const prevTransform = sheetElement.style.transform;
+  const prevHeight = elements.scalerBox ? elements.scalerBox.style.height : '';
+  sheetElement.style.transform = 'none';
+  if (elements.scalerBox) elements.scalerBox.style.height = 'auto';
 
   try {
     const cardElement = elements.targetCard;
@@ -452,7 +516,10 @@ async function exportToPng() {
     console.error('Error exporting PNG:', error);
     showToast('Gagal merender gambar kartu', 'error');
   } finally {
+    sheetElement.style.transform = prevTransform;
+    if (elements.scalerBox) elements.scalerBox.style.height = prevHeight;
     elements.loadingOverlay.classList.add('hidden');
+    autoFitCardPreview();
   }
 }
 
@@ -466,6 +533,12 @@ function init() {
   } catch (_) {}
 
   updateCardPreview();
+
+  // Responsive resize and orientation change listeners
+  window.addEventListener('resize', autoFitCardPreview);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(autoFitCardPreview, 200);
+  });
 
   // Input event listeners for real-time live preview
   [elements.inputNama, elements.inputSekolah, elements.inputNomor, elements.inputPelaksanaan].forEach(input => {
@@ -558,15 +631,15 @@ function init() {
 
   // Scale Controls
   elements.btnFitScreen.addEventListener('click', () => {
-    elements.printableSheet.style.transform = 'scale(1)';
     elements.btnFitScreen.classList.add('active');
     elements.btnScale100.classList.remove('active');
+    autoFitCardPreview();
   });
 
   elements.btnScale100.addEventListener('click', () => {
-    elements.printableSheet.style.transform = 'scale(1.05)';
     elements.btnScale100.classList.add('active');
     elements.btnFitScreen.classList.remove('active');
+    autoFitCardPreview();
   });
 
   // Guide Modal
@@ -588,7 +661,10 @@ function init() {
     }
   });
 
-  console.log('Olimpiade Kimia 2026 Portal Initialized (Privacy-safe mode).');
+  // Trigger initial auto fit after slight delay for fonts/layout
+  setTimeout(autoFitCardPreview, 100);
+
+  console.log('Olimpiade Kimia 2026 Portal Initialized (Responsive & Privacy-safe).');
 }
 
 // Start application

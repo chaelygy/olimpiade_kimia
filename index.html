@@ -341,7 +341,7 @@
     </section>
 
     <!-- Right Column: Live Card Preview (Real-Time WYSIWYG) -->
-    <section class="panel-section preview-panel">
+    <section class="panel-section preview-panel" id="preview-panel">
       <div class="sticky-preview-wrapper">
         <div class="preview-controls-bar">
           <div class="preview-status-tag">
@@ -357,7 +357,8 @@
 
         <!-- The Paper Area Container (Mimics A4 Landscape Sheet) -->
         <div class="paper-viewport" id="paper-viewport">
-          <div class="a4-sheet" id="printable-sheet">
+          <div class="sheet-scaler-box" id="sheet-scaler-box">
+            <div class="a4-sheet" id="printable-sheet">
             
             <!-- Page Title on Paper -->
             <div class="sheet-header" id="sheet-header-title">
@@ -439,6 +440,7 @@
 
           </div>
         </div>
+      </div>
 
         <!-- Direct Action Bar below preview for convenience -->
         <div class="preview-direct-actions">
