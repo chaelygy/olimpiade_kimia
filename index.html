@@ -59,7 +59,7 @@
     <div class="hero-container">
       <div class="hero-motto">
         <span class="motto-tag">Tema</span>
-        <span class="motto-text">"Eksplorasi Ilmu Kimia untuk Generasi Inovatif dan Solutif"</span>
+        <span class="motto-text" id="hero-motto-text">"Meningkatkan Kompetensi dan Kreativitas generasi muda melalui eksplorasi ilmu kimia untuk inovasi berkelanjutan"</span>
       </div>
       <div class="hero-schedule">
         <svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -126,6 +126,49 @@
               >
             </div>
             <span class="field-hint">Nama akan dicetak pada kartu ujian sesuai tanda kurung.</span>
+          </div>
+
+          <!-- Kelas Peserta -->
+          <div class="form-group">
+            <label for="input-kelas" class="form-label">
+              <span>Kelas / Tingkat</span>
+              <span class="required-star">*</span>
+            </label>
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
+              <input 
+                type="text" 
+                id="input-kelas" 
+                name="kelas" 
+                class="form-control" 
+                placeholder="Contoh: XII MIPA 1 / Kelas XI" 
+                required 
+                maxlength="40"
+                list="list-kelas-saran"
+              >
+              <datalist id="list-kelas-saran">
+                <option value="Kelas X"></option>
+                <option value="Kelas XI"></option>
+                <option value="Kelas XII"></option>
+                <option value="X MIPA 1"></option>
+                <option value="XI MIPA 1"></option>
+                <option value="XII MIPA 1"></option>
+                <option value="X IPA 1"></option>
+                <option value="XI IPA 1"></option>
+                <option value="XII IPA 1"></option>
+              </datalist>
+            </div>
+            <div class="quick-picks-row">
+              <span class="quick-picks-label">Pilihan Cepat:</span>
+              <button type="button" class="btn-chip btn-chip-kelas" data-kelas="Kelas X">Kelas X</button>
+              <button type="button" class="btn-chip btn-chip-kelas" data-kelas="Kelas XI">Kelas XI</button>
+              <button type="button" class="btn-chip btn-chip-kelas" data-kelas="Kelas XII">Kelas XII</button>
+              <button type="button" class="btn-chip btn-chip-kelas" data-kelas="XII MIPA 1">XII MIPA 1</button>
+            </div>
+            <span class="field-hint">Tingkat kelas siswa (misal: Kelas X, XI, XII atau kelas spesifik).</span>
           </div>
 
           <!-- Asal Sekolah -->
@@ -260,6 +303,16 @@
             </summary>
             <div class="details-body">
               <div class="form-group">
+                <label for="input-tema" class="form-label">Teks Tema Olimpiade</label>
+                <input 
+                  type="text" 
+                  id="input-tema" 
+                  class="form-control" 
+                  value="Meningkatkan Kompetensi dan Kreativitas generasi muda melalui eksplorasi ilmu kimia untuk inovasi berkelanjutan"
+                  maxlength="150"
+                >
+              </div>
+              <div class="form-group">
                 <label for="input-pelaksanaan" class="form-label">Teks Tanggal Pelaksanaan</label>
                 <input 
                   type="text" 
@@ -377,7 +430,7 @@
                   <h3 class="card-title-main">KARTU PESERTA</h3>
                   <div class="card-title-sub">OLIMPIADE KIMIA 2026</div>
                   <div class="card-institution">UNIVERSITAS HKBP NOMMENSEN PEMATANGSIANTAR</div>
-                  <div class="card-motto">Eksplorasi Ilmu Kimia untuk Generasi Inovatif dan Solutif</div>
+                  <div class="card-motto" id="card-display-motto">"Meningkatkan Kompetensi dan Kreativitas generasi muda melalui eksplorasi ilmu kimia untuk inovasi berkelanjutan"</div>
                 </div>
               </div>
 
@@ -399,6 +452,11 @@
                   <div class="card-field-row">
                     <div class="card-field-label">NAMA PESERTA</div>
                     <div class="card-field-value" id="card-display-nama">[Nama lengkap]</div>
+                  </div>
+
+                  <div class="card-field-row">
+                    <div class="card-field-label">KELAS</div>
+                    <div class="card-field-value" id="card-display-kelas">[Kelas / Tingkat]</div>
                   </div>
 
                   <div class="card-field-row">

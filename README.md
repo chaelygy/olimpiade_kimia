@@ -9,14 +9,16 @@ Aplikasi web modern untuk pendaftaran peserta Olimpiade Kimia 2026 sekaligus men
 
 1. **Formulir Pendaftaran Lengkap**:
    - Nama Lengkap Peserta (auto-format kapitalisasi)
+   - Kelas / Tingkat (pilihan cepat Kelas X, XI, XII, XII MIPA atau kustom)
    - Asal / Alamat Sekolah
    - Nomor Peserta (input manual atau klik **"Nomor Baru"** untuk generate otomatis seperti `OK-001`, `OK-002`, dst.)
    - Pas Foto Peserta (Ukuran 3 × 4 cm) dengan dukungan drag & drop, file picker, serta tombol sampel foto cepat.
 
 2. **Desain Kartu 100% Identik dengan Template Resmi**:
    - Header warna maroon khas dengan Logo resmi Universitas HKBP Nommensen Pematangsiantar
+   - Tema Resmi: *"Meningkatkan Kompetensi dan Kreativitas generasi muda melalui eksplorasi ilmu kimia untuk inovasi berkelanjutan"*
    - Pas foto peserta rasio 3:4
-   - Biodata lengkap peserta dan nomor urut
+   - Biodata lengkap peserta (Nama, Kelas, Asal Sekolah, Nomor Peserta)
    - Banner pelaksanaan acara: **14 November 2026**
    - Stempel resmi Panitia Olimpiade Kimia UHKBPNP (warna biru)
    - Garis batas pemotongan kartu putus-putus (*dashed line*)

@@ -12,9 +12,11 @@ const STATE = {
 const elements = {
   form: document.getElementById('registration-form'),
   inputNama: document.getElementById('input-nama'),
+  inputKelas: document.getElementById('input-kelas'),
   inputSekolah: document.getElementById('input-sekolah'),
   inputNomor: document.getElementById('input-nomor'),
   inputPelaksanaan: document.getElementById('input-pelaksanaan'),
+  inputTema: document.getElementById('input-tema'),
   toggleStempel: document.getElementById('toggle-stempel'),
   toggleGuides: document.getElementById('toggle-guides'),
   
@@ -33,9 +35,12 @@ const elements = {
   
   // Card Display Elements
   cardDisplayNama: document.getElementById('card-display-nama'),
+  cardDisplayKelas: document.getElementById('card-display-kelas'),
   cardDisplaySekolah: document.getElementById('card-display-sekolah'),
   cardDisplayNomor: document.getElementById('card-display-nomor'),
   cardDisplayPelaksanaan: document.getElementById('card-display-pelaksanaan'),
+  cardDisplayMotto: document.getElementById('card-display-motto'),
+  heroMottoText: document.getElementById('hero-motto-text'),
   cardStampBox: document.getElementById('card-stamp-box'),
   cardPhotoContainer: document.getElementById('card-photo-container'),
   photoPlaceholderGuide: document.getElementById('photo-placeholder-guide'),
@@ -147,13 +152,20 @@ function autoFitCardPreview() {
 // ==========================================================================
 function updateCardPreview() {
   const namaVal = elements.inputNama.value.trim();
+  const kelasVal = elements.inputKelas ? elements.inputKelas.value.trim() : '';
   const sekolahVal = elements.inputSekolah.value.trim();
   const nomorVal = elements.inputNomor.value.trim();
   const pelaksanaanVal = elements.inputPelaksanaan.value.trim();
+  const temaVal = elements.inputTema ? elements.inputTema.value.trim() : '';
 
   // Name
   elements.cardDisplayNama.textContent = namaVal || '[Nama lengkap]';
   
+  // Class / Tingkat
+  if (elements.cardDisplayKelas) {
+    elements.cardDisplayKelas.textContent = kelasVal || '[Kelas / Tingkat]';
+  }
+
   // School
   elements.cardDisplaySekolah.textContent = sekolahVal || '[Nama sekolah]';
 
@@ -162,6 +174,16 @@ function updateCardPreview() {
 
   // Schedule text
   elements.cardDisplayPelaksanaan.textContent = pelaksanaanVal || '14 NOVEMBER 2026';
+
+  // Theme text
+  const defaultTema = 'Meningkatkan Kompetensi dan Kreativitas generasi muda melalui eksplorasi ilmu kimia untuk inovasi berkelanjutan';
+  const displayTema = temaVal || defaultTema;
+  if (elements.cardDisplayMotto) {
+    elements.cardDisplayMotto.textContent = `"${displayTema}"`;
+  }
+  if (elements.heroMottoText) {
+    elements.heroMottoText.textContent = `"${displayTema}"`;
+  }
 
   // Stamp toggle
   if (elements.toggleStempel.checked) {
@@ -369,9 +391,16 @@ function fillQuickSample() {
     'SMA Negeri 2 Pematangsiantar',
     'SMA Swasta Sultan Agung Pematangsiantar'
   ];
+  const sampleClasses = [
+    'XII MIPA 1',
+    'XI MIPA 2',
+    'XII MIPA 3',
+    'XI MIPA 1'
+  ];
 
   const pick = Math.floor(Math.random() * sampleNames.length);
   elements.inputNama.value = sampleNames[pick];
+  if (elements.inputKelas) elements.inputKelas.value = sampleClasses[pick];
   elements.inputSekolah.value = sampleSchools[pick];
   
   generateNextNomor();
@@ -541,7 +570,7 @@ function init() {
   });
 
   // Input event listeners for real-time live preview
-  [elements.inputNama, elements.inputSekolah, elements.inputNomor, elements.inputPelaksanaan].forEach(input => {
+  [elements.inputNama, elements.inputKelas, elements.inputSekolah, elements.inputNomor, elements.inputPelaksanaan, elements.inputTema].filter(Boolean).forEach(input => {
     input.addEventListener('input', updateCardPreview);
   });
 
@@ -555,6 +584,18 @@ function init() {
       elements.inputNama.value = val.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1));
       updateCardPreview();
     }
+  });
+
+  // Quick Chips for Kelas
+  document.querySelectorAll('.btn-chip-kelas').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const kelasVal = chip.getAttribute('data-kelas');
+      if (kelasVal && elements.inputKelas) {
+        elements.inputKelas.value = kelasVal;
+        updateCardPreview();
+        showToast(`Kelas dipilih: ${kelasVal}`, 'info');
+      }
+    });
   });
 
   // Buttons
@@ -571,8 +612,12 @@ function init() {
   elements.btnResetForm.addEventListener('click', () => {
     setTimeout(() => {
       clearPhoto();
+      if (elements.inputKelas) elements.inputKelas.value = '';
       elements.inputNomor.value = 'OK-001';
       elements.inputPelaksanaan.value = '14 NOVEMBER 2026';
+      if (elements.inputTema) {
+        elements.inputTema.value = 'Meningkatkan Kompetensi dan Kreativitas generasi muda melalui eksplorasi ilmu kimia untuk inovasi berkelanjutan';
+      }
       updateCardPreview();
       showToast('Formulir telah dikosongkan', 'info');
     }, 50);

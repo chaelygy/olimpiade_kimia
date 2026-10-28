@@ -568,7 +568,8 @@ body {
   gap: 0.5rem;
 }
 
-.photo-quick-picks {
+.photo-quick-picks,
+.quick-picks-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1041,7 +1042,7 @@ input:checked + .slider:before {
 /* Header Maroon */
 .card-header-banner {
   background-color: var(--card-header-bg);
-  padding: 10px 14px;
+  padding: 8px 14px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1049,8 +1050,8 @@ input:checked + .slider:before {
 }
 
 .card-logo-box {
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -1058,20 +1059,21 @@ input:checked + .slider:before {
 }
 
 .card-emblem-img {
-  width: 54px;
-  height: 54px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
 }
 
 .card-header-titles {
   display: flex;
   flex-direction: column;
-  line-height: 1.25;
+  line-height: 1.2;
+  flex: 1;
 }
 
 .card-title-main {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 800;
   letter-spacing: 0.05em;
   color: #ffffff;
@@ -1080,7 +1082,7 @@ input:checked + .slider:before {
 
 .card-title-sub {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 800;
   letter-spacing: 0.03em;
   color: #ffffff;
@@ -1088,7 +1090,7 @@ input:checked + .slider:before {
 
 .card-institution {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.01em;
   color: #ffffff;
@@ -1097,20 +1099,21 @@ input:checked + .slider:before {
 
 .card-motto {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 9px;
+  font-size: 8px;
   font-style: italic;
   font-weight: 400;
   color: #ffffff;
   opacity: 0.95;
-  margin-top: 1px;
+  margin-top: 2px;
+  line-height: 1.25;
 }
 
 /* Card Body */
 .card-body-content {
-  padding: 12px 14px 10px 14px;
+  padding: 10px 14px 8px 14px;
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 14px;
   position: relative;
   min-height: 125px;
 }
@@ -1167,20 +1170,20 @@ input:checked + .slider:before {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  padding-top: 2px;
+  gap: 5px;
+  padding-top: 1px;
   z-index: 2;
 }
 
 .card-field-row {
   display: flex;
   flex-direction: column;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .card-field-label {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 800;
   color: var(--card-field-label);
   letter-spacing: 0.04em;
@@ -1189,7 +1192,7 @@ input:checked + .slider:before {
 
 .card-field-value {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--card-field-value);
   word-break: break-word;
@@ -1197,7 +1200,7 @@ input:checked + .slider:before {
 
 .nomor-badge-text {
   font-weight: 800;
-  font-size: 14px;
+  font-size: 13.5px;
   letter-spacing: 0.04em;
   color: var(--card-field-label);
 }
